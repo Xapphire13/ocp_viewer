@@ -34,6 +34,7 @@ nothing downstream has to know the command line existed.
 # limitations under the License.
 #
 
+import sys
 from pathlib import Path
 
 import yaml
@@ -42,6 +43,48 @@ import yaml
 # because the package it belongs to was renamed.
 CONFIG_FILE = Path.home() / ".ocpvscode_standalone"
 
+DEFAULT_MODIFIER_KEYS = {
+    "macOS": {"shift": "shiftKey", "ctrl": "ctrlKey", "meta": "metaKey", "alt": "altKey"},
+    "default": {"shift": "shiftKey", "ctrl": "ctrlKey", "meta": "altKey", "alt": "metaKey"},
+}
+
+
+def resolve_modifier_keys(value, platform=None):
+    """The stored map for this machine's operating system.
+
+    The stored value is one map per platform, `{"macOS": ..., "default": ...}`,
+    so that whoever opens the file sees which platform gets what - the shape
+    build123d Studio and the VS Code extension store. `meta` rotates, hides
+    and isolates, and `metaKey` is Cmd on macOS but the Win/Super key on
+    Windows and Linux, which the desktop takes for itself (the Start menu,
+    window snapping, moving windows) - those chords never reach the page, so
+    there `meta` and `alt` swap physical keys. A flat map, the shape of a file
+    written by an earlier release, is taken as it is on every platform.
+    """
+    if not isinstance(value, dict) or ("default" not in value and "macOS" not in value):
+        return value
+    platform = sys.platform if platform is None else platform
+    if platform == "darwin" and value.get("macOS") is not None:
+        return dict(value["macOS"])
+    return dict(value.get("default", value.get("macOS")))
+
+
+def upgrade_modifier_keys(value, platform=None):
+    """A flat map from an older file, lifted into the per-platform shape.
+
+    The flat map is what the user chose on the machine that wrote the file,
+    so it goes under that machine's platform; the other platform gets the
+    shipped default. Written back that way, the file then works on both. A
+    value already in the per-platform shape is returned as it is.
+    """
+    if not isinstance(value, dict) or "default" in value or "macOS" in value:
+        return value
+    platform = sys.platform if platform is None else platform
+    upgraded = {key: dict(keys) for key, keys in DEFAULT_MODIFIER_KEYS.items()}
+    upgraded["macOS" if platform == "darwin" else "default"] = dict(value)
+    return upgraded
+
+
 DEFAULTS = {
     "debug": False,
     "no_glass": False,
@@ -49,12 +92,7 @@ DEFAULTS = {
     "tree_width": 240,
     "theme": "browser",
     "control": "trackball",
-    "modifier_keys": {
-        "shift": "shiftKey",
-        "ctrl": "ctrlKey",
-        "meta": "metaKey",
-        "alt": "altKey",
-    },
+    "modifier_keys": dict(DEFAULT_MODIFIER_KEYS),
     "new_tree_behavior": True,
     "pan_speed": 1,
     "rotate_speed": 1,
@@ -157,9 +195,12 @@ def resolve(params):
                        "no_tools", "perspective"):
             config[key] = value
 
+    # The file keeps one map per platform; the viewer gets this platform's. A
+    # flat map from an older file is this platform's choice, lifted first.
+    keys = resolve_modifier_keys(upgrade_modifier_keys(config.get("modifier_keys")))
     # For compatibility with 2.9.0, whose config files have no alt key.
-    keys = config.get("modifier_keys")
     if isinstance(keys, dict) and keys.get("alt") is None:
         keys["alt"] = "altKey"
+    config["modifier_keys"] = keys
 
     return dict(sorted(config.items()))

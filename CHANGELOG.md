@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.3 (2026-09-14)
+
+- `modifier_keys` is one map per platform, `{"macOS": {...}, "default": {...}}`, and the viewer gets the one for the machine it runs on. `meta` rotates, hides and isolates, and `metaKey` is Cmd on macOS but the Windows/Super key on Windows and Linux, which the desktop takes for itself - those chords never reached the page there. The default for Windows and Linux is therefore `meta: altKey, alt: metaKey`; the same shape the VS Code extension, Jupyter CadQuery and build123d Studio store. A `~/.ocpvscode_standalone` from an earlier release holds a single flat map: it is read as this platform's choice, with the shipped default for the other.
+- The core floor is `ocp-viewer-core[cli]>=1.0.10`, where `Animation.add_track` refuses an unknown action or ill-shaped values before they are sent.
+
 ## v1.1.2 (2026-09-11)
 
 - The core floor is `ocp-viewer-core[cli]>=1.0.9`: there `reset_defaults(port=...)` resets the viewer it names. In 1.0.8 the reset opened a fresh scope over the one the `port` had set, so with two viewers listening the which-port prompt appeared in the middle of a `reset_defaults`, and with one it reset whichever discovery found.
