@@ -48,13 +48,7 @@ from ocp_viewer_core.selectors import (
     select_vertex,
     select_vertices,
 )
-from ocp_viewer_core.tessellator import (
-    ImageFace,
-    disable_native_tessellator,
-    enable_native_tessellator,
-    init_native_tessellator,
-    is_native_tessellator_enabled,
-)
+from ocp_viewer_core.tessellator import ImageFace
 
 from ._version import __version__
 from .comms import *
@@ -85,8 +79,6 @@ __all__ = [
     "UiTab",
     "combined_config",
     "comms",
-    "disable_native_tessellator",
-    "enable_native_tessellator",
     "find_and_set_port",
     "get_colormap",
     "get_default",
@@ -96,8 +88,6 @@ __all__ = [
     "hex_to_rgb",
     "hsv_mapper",
     "ignore_camera_warnings",
-    "init_native_tessellator",
-    "is_native_tessellator_enabled",
     "matplotlib_mapper",
     "none_filter",
     "push_object",
@@ -127,6 +117,3 @@ __all__ = [
     "workspace_config",
 ]
 
-
-if init_native_tessellator():
-    print("Found and enabled native tessellator.")

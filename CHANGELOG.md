@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- The native-tessellator toggles are gone: `enable_native_tessellator`, `disable_native_tessellator`, `is_native_tessellator_enabled` and `init_native_tessellator` are no longer exported, and importing `ocp_viewer` no longer prints "Found and enabled native tessellator.". ocp-tessellate dropped its native tessellator and `ocp_addons`, and ocp-viewer-core the toggles with it.
+
 ## v1.1.3 (2026-09-14)
 
 - `modifier_keys` is one map per platform, `{"macOS": {...}, "default": {...}}`, and the viewer gets the one for the machine it runs on. `meta` rotates, hides and isolates, and `metaKey` is Cmd on macOS but the Windows/Super key on Windows and Linux, which the desktop takes for itself - those chords never reached the page there. The default for Windows and Linux is therefore `meta: altKey, alt: metaKey`; the same shape the VS Code extension, Jupyter CadQuery and build123d Studio store. A `~/.ocpvscode_standalone` from an earlier release holds a single flat map: it is read as this platform's choice, with the shipped default for the other.
