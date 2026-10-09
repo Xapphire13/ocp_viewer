@@ -4,6 +4,6 @@
   "description": "The JavaScript the viewer page loads. Not published: this exists so the two packages the page needs can be resolved and copied into static/ by `make dist`.",
   "dependencies": {
     "ocp-viewer-core": "1.0.4",
-    "three-cad-viewer": "5.0.6"
+    "three-cad-viewer": "5.1.1"
   }
 }
