@@ -265,6 +265,12 @@ def track_param(ctx, param, value):
     callback=track_param,
 )
 @click.option(
+    "--python_enumeration",
+    is_flag=True,
+    help="Number repeated object names from 0 like Python indices, Solid(0), Solid(1), ... instead of Solid, Solid(2), ...",
+    callback=track_param,
+)
+@click.option(
     "--default_color",
     type=click.STRING,
     default=None,
