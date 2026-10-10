@@ -277,7 +277,7 @@ def test_show_against_fresh_standalone_does_not_hang(standalone):
     in seconds. This is the regression test for the missing `B:` ack bug
     (`standalone.py` not sending `{"ok": True}` to `comms.py:_send` waiting
     on `ws.recv()`), which presents as `show()` hanging forever."""
-    import cadquery as cq
+    cq = pytest.importorskip("cadquery")  # the model is a cadquery box
     from ocp_viewer import show
 
     proc = standalone()
@@ -298,7 +298,7 @@ def test_status_after_show_returns_safe_collapse(standalone):
     `comms.py:_send`'s fallback dict was hit (connection error path) and is
     leaking its bogus `"collapse": "none"` placeholder into downstream
     callers that try `.value` on it."""
-    import cadquery as cq
+    cq = pytest.importorskip("cadquery")  # the model is a cadquery box
     from ocp_viewer import Collapse, show, status
 
     proc = standalone()
