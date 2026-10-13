@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v1.2.0 (2026-10-13)
 
 - **Features**
     - New setting `python_enumeration` (default `true`) in `~/.ocpvscode_standalone`, flags `--python_enumeration` / `--no_python_enumeration` and keyword `python_enumeration` of `show`, `show_object`, `show_objects` and `set_defaults` ([vscode-ocp-cad-viewer #242](https://github.com/bernhard-42/vscode-ocp-cad-viewer/issues/242)): repeated object names are numbered from 0 like Python indices - `Solid(0)`, `Solid(1)`, `Solid(2)` instead of `Solid`, `Solid(2)`, `Solid(3)`. `false` (or `--no_python_enumeration`) restores the former names. A config file written by an earlier release has no such key and gets the default
