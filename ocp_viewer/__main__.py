@@ -265,9 +265,9 @@ def track_param(ctx, param, value):
     callback=track_param,
 )
 @click.option(
-    "--python_enumeration",
-    is_flag=True,
-    help="Number repeated object names from 0 like Python indices, Solid(0), Solid(1), ... instead of Solid, Solid(2), ...",
+    "--python_enumeration/--no_python_enumeration",
+    default=None,
+    help=f"Number repeated object names from 0 like Python indices, Solid(0), Solid(1), ... instead of Solid, Solid(2), ...; --no_python_enumeration restores the former names (default: {DEFAULTS['python_enumeration']})",
     callback=track_param,
 )
 @click.option(

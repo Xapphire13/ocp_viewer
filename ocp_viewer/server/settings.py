@@ -134,9 +134,10 @@ DEFAULTS = {
     "metalness": 0.3,
     "roughness": 0.65,
     # ocp-tessellate's naming of repeated objects, read by Python's show and
-    # never by the page. False keeps the former names, which are the tree paths
-    # animations, states and selections address.
-    "python_enumeration": False,
+    # never by the page. True numbers them from 0 like Python indices; False
+    # restores the former names, which are the tree paths animations, states
+    # and selections address.
+    "python_enumeration": True,
 }
 
 # Not settings: where to listen, and how the page should behave if the server
